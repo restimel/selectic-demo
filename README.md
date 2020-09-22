@@ -12,5 +12,5 @@ This project is to show how to use it and to understand better how it works with
 
 ## Live demonstration
 
-https://restimel.github.io/Selectic-demo/examples/index.html
+https://restimel.github.io/selectic-demo/examples/index.html
 

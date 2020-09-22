@@ -26,13 +26,22 @@
                 Redraw component
             </button>
         </div>
+        <div>
+            <label>
+                <input type="checkbox" v-model="scrollTest">
+                Embed component in a scroll element
+            </label>
+        </div>
     </fieldset>
-    <fieldset>
+    <fieldset
+        :class="{'scroll-test': scrollTest}"
+    >
         <legend>
             Example result
         </legend>
+	<div class="spanHeight"></div>
 
-        <div>
+        <div class="demo">
             <Selectic
                 :params="selecticParams"
                 :child="selecticChild"
@@ -40,8 +49,11 @@
                 :key="`selectic-${drawId}`"
             />
         </div>
+	<div class="spanHeight"></div>
 
-        <label>Selected value: <output>{{JSON.stringify(selecticValue)}}</output></label>
+        <label @dblclick="saveCode">
+            Selected value: <output>{{JSON.stringify(selecticValue)}}</output>
+        </label>
     </fieldset>
 </div>
 </template>
@@ -95,6 +107,7 @@ export default {
 
             reason: '',
             drawId: 0,
+            scrollTest: false,
         };
     },
     methods: {
@@ -107,6 +120,9 @@ export default {
             if (key === 'Tab') {
                 evt.preventDefault;
             }
+        },
+        saveCode() {
+            console.log(encodeURIComponent(this.html));
         },
 
         highlighter(code) {
@@ -351,24 +367,41 @@ export default {
     grid-template: max-content / 1fr 1fr;
     grid-column-gap: 15px;
 }
+.half > fieldset {
+    overflow: auto;
+}
 
 .prism-editor__textarea,
 .html-draft {
-    width: 450px;
-    height: 300px;
+    width: 500px;
+    height: 600px;
     min-height: 100px;
     min-width: 100px;
 }
 .my-editor {
-  background: #2d2d2d;
-  color: #ccc;
+    background: #2d2d2d;
+    color: #ccc;
 
-  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 5px;
+    font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 5px;
 }
 .prism-editor__textarea:focus {
-  outline: none;
+    outline: none;
+}
+
+.scroll-test {
+    max-height: 100vh;
+}
+.spanHeight {
+    height: 0;
+}
+.scroll-test .spanHeight {
+    height: 100vh;
+}
+
+.positionBottom {
+    margin-top: 100vh;
 }
 </style>

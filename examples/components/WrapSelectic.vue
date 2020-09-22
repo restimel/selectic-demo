@@ -2,7 +2,7 @@
 <template>
 <Selectic
     class="example"
-    :classNames="classNames"
+    :class="classNames"
     :style="style"
     :id="id"
     :options="options"

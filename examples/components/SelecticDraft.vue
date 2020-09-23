@@ -112,6 +112,7 @@ export default {
     },
     methods: {
         redraw() {
+            this.selecticValue = null;
             this.drawId++;
         },
         onKey(evt) {
@@ -122,7 +123,21 @@ export default {
             }
         },
         saveCode() {
-            console.log(encodeURIComponent(this.html));
+            const code = encodeURIComponent(this.html).replace(/-/g, '%2D');
+            let href = document.location.href;
+
+            href = href.replace(/(?:&|(?<=\?))code=[^&]*/, '');
+            if (!href.includes('?')) {
+                href += '?';
+            }
+
+            if (!href.endsWith('?')) {
+                href += '&';
+            }
+
+            href += `code=${code}`;
+
+            console.dir(href);
         },
 
         highlighter(code) {
@@ -141,17 +156,27 @@ export default {
                 const selecticParams = elem.params;
                 const selecticChild = elem.child.map((elem) => {
                     const options = elem.child.filter((el) => el.tagName !== 'text').map((el) => {
+                        // TODO data
                         return {
                             tagName: el.tagName,
                             id: el.params.id || el.params.value,
                             text: el.params.label || el.child[0]?.params?.text,
+                            title: el.params.title,
+                            disabled: el.params.disabled,
+                            icon: el.params.icon,
+                            group: el.params.group,
                             options: [],
                         };
                     });
+                    // TODO data
                     return {
                         tagName: elem.tagName,
                         id: elem.params.id || elem.params.value,
                         text: elem.params.label || elem.child[0]?.params?.text,
+                        title: elem.params.title,
+                        disabled: elem.params.disabled,
+                        icon: elem.params.icon,
+                        group: elem.params.group,
                         options: options,
                     };
                 });

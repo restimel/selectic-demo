@@ -25,9 +25,16 @@
             <optgroup v-if="opt.tagName === 'optgroup'"
                 :value="opt.id"
                 :label="opt.text"
+                :disabled="!!opt.disabled"
+                :title="opt.title"
+                :icon="opt.icon"
+                :key="opt.id"
             >
                 <option v-for="subopt of opt.options"
                     :value="subopt.id"
+                    :disabled="!!subopt.disabled"
+                    :title="subopt.title"
+                    :icon="subopt.icon"
                     :key="subopt.id"
                 >
                     {{subopt.text}}
@@ -35,6 +42,10 @@
             </optgroup>
             <option v-else
                 :value="opt.id"
+                :disabled="!!opt.disabled"
+                :title="opt.title"
+                :icon="opt.icon"
+                :group="opt.group"
                 :key="opt.id"
             >
                 {{opt.text}}
@@ -159,7 +170,7 @@ const dicList = {
 };
 
 function sleep(time) {
-    return Promise((resolve) => {
+    return new Promise((resolve) => {
         setTimeout(resolve, time);
     });
 }
@@ -323,7 +334,6 @@ export default {
             if (typeof params.fetchCallback === 'string') {
                 const [,kind, nb, delay] = params.fetchCallback.match(/(\w+?)(\d+)(?:[-:]+(\d+))?/) || [];
                 const nbItems = kind === 'group' ? -nb : +nb;
-                console.log('fetchCallback', kind, nb, delay);
                 params.fetchCallback = buildFetchCallback(nbItems, +delay || 0);
             }
 

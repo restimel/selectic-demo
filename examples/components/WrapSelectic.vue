@@ -375,6 +375,8 @@ export default {
         message() {
             const msg = [];
             const opts = this.params.options;
+            const fetchCallback = this.params.params?.fetchCallback;
+            const getItemsCallback = this.params.params?.getItemsCallback;
 
             if (typeof opts === 'string') {
                 const list = dicList[opts];
@@ -384,6 +386,42 @@ export default {
                 } else {
                     msg.push(`'${opts}' is not correctly interpreted by the example page!`);
                 }
+            }
+
+            if (typeof fetchCallback === 'string') {
+                const [,kind, nb, delay = 0] = fetchCallback.match(/(\w+?)(\d+)(?:[-:]+(\d+))?/) || [];
+                let content = '';
+                let time = '';
+
+                if (kind === 'group') {
+                    content = `${nb} groups (with ${nbItemPerDynGroup} items each)`;
+                } else {
+                    content = `${nb} items`;
+                }
+                if (delay > 0) {
+                    time = `[resolved after a delay of ${delay}ms]`;
+                } else {
+                    time = `[resolved immediately]`;
+                }
+                msg.push(`'${fetchCallback}' is a shorthand for a promise which return ${content}. ${time}`);
+            }
+
+            if (typeof getItemsCallback === 'string') {
+                const [,kind, nb, delay = 0] = getItemsCallback.match(/(\w+?)(\d+)(?:[-:]+(\d+))?/) || [];
+                let content = '';
+                let time = '';
+
+                if (kind === 'group') {
+                    content = `${nb} groups (with ${nbItemPerDynGroup} items each)`;
+                } else {
+                    content = `${nb} items`;
+                }
+                if (delay > 0) {
+                    time = `[resolved after a delay of ${delay}ms]`;
+                } else {
+                    time = `[resolved immediately]`;
+                }
+                msg.push(`'${getItemsCallback}' is a shorthand for a promise which get items from ${content}. ${time}`);
             }
 
             return msg.join('\n');
@@ -407,7 +445,7 @@ export default {
         multiple() {
             this.needRedraw = true;
         },
-        optionParams(oldParams, newParams) {
+        'params.params'(newParams, oldParams) {
             try {
                 if (JSON.stringify(oldParams) !== JSON.stringify(newParams)) {
                     this.needRedraw = true;

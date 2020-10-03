@@ -168,6 +168,15 @@ const dicList = {
     groupOptions: groupOptions,
     group: groupOptions,
 };
+const dicDescription = new Map([
+    [emptyOptions, 'no items (is empty)'],
+    [oneOptions, 'only one item (with a string id)'],
+    [shortNumOptions, '4 items (with numeric id)'],
+    [longNumOptions, '1500 items (with numeric id)'],
+    [shortStringOptions, '4 items (with string id)'],
+    [longStringOptions, '1500 items (with string id)'],
+    [groupOptions, '4 groups with differents items (total of 3008 items)'],
+]);
 
 function sleep(time) {
     return new Promise((resolve) => {
@@ -282,6 +291,7 @@ export default {
     },
     data() {
         return {
+            needRedraw: false,
         };
     },
     computed: {
@@ -361,6 +371,54 @@ export default {
         elementChild() {
             return this.child;
         },
+
+        message() {
+            const msg = [];
+            const opts = this.params.options;
+
+            if (typeof opts === 'string') {
+                const list = dicList[opts];
+                const content = dicDescription.get(list);
+                if (content) {
+                    msg.push(`'${opts}' is a shorthand for a list containing ${content}.`);
+                } else {
+                    msg.push(`'${opts}' is not correctly interpreted by the example page!`);
+                }
+            }
+
+            return msg.join('\n');
+        },
+    },
+    methods: {
+        sendInfo() {
+            this.$emit('info', {
+                needRedraw: this.needRedraw,
+                message: this.message,
+            });
+        },
+    },
+    watch: {
+        needRedraw() {
+            this.sendInfo();
+        },
+        message() {
+            this.sendInfo();
+        },
+        multiple() {
+            this.needRedraw = true;
+        },
+        optionParams(oldParams, newParams) {
+            try {
+                if (JSON.stringify(oldParams) !== JSON.stringify(newParams)) {
+                    this.needRedraw = true;
+                }
+            } catch(e) {
+                return;
+            }
+        },
+    },
+    created() {
+        this.sendInfo();
     },
     components: {
         Selectic,

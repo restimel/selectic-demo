@@ -16,8 +16,15 @@
             language="vue"
             line-numbers
         />
-        <div class="error-message">
+        <div v-if="reason"
+            class="error-message"
+        >
             {{reason}}
+        </div>
+        <div v-for="msg of infoMessage"
+            class="info-message"
+        >
+            {{msg}}
         </div>
         <div>
             <button
@@ -47,6 +54,7 @@
                 :child="selecticChild"
                 @input="(value) => selecticValue = value"
                 :key="`selectic-${drawId}`"
+                @info="(msg) => messages = msg"
             />
         </div>
 	<div class="spanHeight"></div>
@@ -106,9 +114,25 @@ export default {
             selecticValue: null,
 
             reason: '',
+            messages: {
+                needRedraw: false,
+                message: '',
+            },
             drawId: 0,
             scrollTest: false,
         };
+    },
+    computed: {
+        infoMessage() {
+            const message = this.messages;
+            const messages = message.message.split('\n').filter((str) => str);
+
+            if (message.needRedraw) {
+                messages.push('The component needs to be redrawn');
+            }
+
+            return messages;
+        },
     },
     methods: {
         redraw() {
@@ -253,6 +277,10 @@ export default {
                             break;
                         case 'inside':
                             if (char === '/') {
+                                if (nextChar !== '>') {
+                                    this.reason = 'wrong tag ending';
+                                    return [false];
+                                }
                                 index++;
                                 mode = 'end';
                                 break mainLoop;
@@ -369,7 +397,7 @@ export default {
     watch: {
         html() {
             this.htmlChange();
-        }
+        },
     },
     components: {
         Selectic,
@@ -386,6 +414,10 @@ export default {
 .error-message {
     height: 1.2em;
     color: #FF6666;
+}
+.info-message {
+    height: 1.2em;
+    color: #3366FF;
 }
 .half {
     display: grid;

@@ -1,6 +1,6 @@
 {
   "name": "selectic-demo",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Demonstration usage of Selectic",
   "main": "index.html",
   "repository": {
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "prismjs": "^1.21.0",
-    "selectic": "1.3.1",
+    "selectic": "1.3.2",
     "vue": "^2.6.12",
     "vue-prism-editor": "^1.2.2",
     "vue-template-compiler": "2.6.12"

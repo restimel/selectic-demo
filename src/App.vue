@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import '@/assets/font-awesome.min.css';
 </script>
 
 <style>

@@ -4,7 +4,7 @@ export const longNumOptions = new Array(longLength);
 export const longStringOptions = new Array(longLength);
 export const longStringLongOptions = new Array(longLength);
 const textSuffix1 = ' --- short text added';
-const textSuffix2 = ' --- this is a long text added to the description which should need scrolling to be readabled';
+const textSuffix2 = ' --- this is a long text added to the description which should need scrolling to be readable';
 for (let i = 0; i < longLength; i++) {
     longNumOptions[i] = {
         id: i,
@@ -53,6 +53,28 @@ export const shortStringOptions = [{
     id: 'fourth',
     text: 'Fourth option',
 }];
+
+export const shortExclusiveOptions = [{
+    id: 'notExclusive1',
+    text: 'normal option 1',
+    exclusive: false,
+}, {
+    id: 'notExclusive2',
+    text: 'normal option 2',
+    exclusive: false,
+}, {
+    id: 'exclusive1',
+    text: 'exclusive option 1',
+    exclusive: true,
+}, {
+    id: 'notExclusive3',
+    text: 'normal option 3',
+    exclusive: false,
+}, {
+    id: 'exclusive2',
+    text: 'exclusive option 2',
+    exclusive: true,
+}];
 export const groupOptions = [{
     id: 'shortInt',
     text: 'short with numerical id',
@@ -62,6 +84,10 @@ export const groupOptions = [{
     text: 'short with string id',
     options: shortStringOptions,
 }, {
+    id: 'shortExclusiveOptions',
+    text: 'short with exclusive item',
+    options: shortExclusiveOptions,
+}, {
     id: 'longInt',
     text: 'long with numerical id',
     options: longNumOptions,
@@ -70,7 +96,7 @@ export const groupOptions = [{
     text: 'long with string id',
     options: longStringOptions,
 }, {
-    id: 'longStrlong',
+    id: 'longStrLong',
     text: 'long list with long description',
     options: longStringLongOptions,
 }];
@@ -135,15 +161,18 @@ export const dicList = {
     list5: groupOptions,
     groupOptions: groupOptions,
     group: groupOptions,
+    list6: shortExclusiveOptions,
+    exclusive: shortExclusiveOptions,
 };
 
 export const dicDescription = new Map([
     [emptyOptions, 'no items (is empty)'],
     [oneOptions, 'only one item (with a string id)'],
-    [shortNumOptions, '4 items (with numeric id)'],
-    [longNumOptions, '1500 items (with numeric id)'],
-    [shortStringOptions, '4 items (with string id)'],
-    [longStringOptions, '1500 items (with string id)'],
-    [longStringLongOptions, '1500 items (with string id) and long description'],
-    [groupOptions, '4 groups with differents items (total of 3008 items)'],
+    [shortNumOptions, `${shortNumOptions.length} items (with numeric id)`],
+    [longNumOptions, `${longNumOptions.length} items (with numeric id)`],
+    [shortStringOptions, `${shortStringOptions.length} items (with string id)`],
+    [longStringOptions, `${longStringOptions.length} items (with string id)`],
+    [longStringLongOptions, `${longStringLongOptions.length} items (with string id) and long description`],
+    [groupOptions, `${groupOptions.length} groups with different items (total of 3008 items)`],
+    [shortExclusiveOptions, `${shortExclusiveOptions.length} items with some items which have exclusive option (for multiple mode)`],
 ]);

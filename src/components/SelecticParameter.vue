@@ -325,6 +325,7 @@ import {
     longStringLongOptions,
     emptyOptions,
     oneOptions,
+    shortExclusiveOptions,
     shortNumOptions,
     shortStringOptions,
     groupOptions,
@@ -381,6 +382,10 @@ export default defineComponent({
                 id: 'shortStringOptions',
                 text: `short with string id (${shortStringOptions.length} items)`,
                 values: shortStringOptions,
+            }, {
+                id: 'shortExclusiveOptions',
+                text: `short with string id (${shortExclusiveOptions.length} items) -- some items have exclusive option`,
+                values: shortExclusiveOptions,
             }, {
                 id: 'longNumOptions',
                 text: `long with numerical id (${longNumOptions.length} items)`,

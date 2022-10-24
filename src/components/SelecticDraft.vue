@@ -97,9 +97,31 @@ import Selectic from './WrapSelectic.vue';
 
 
 function getJSON(str) {
-    return str.replace(/(?:(["'])([^\1\n]+?)\1|(\w+))\s*:/g, (str, _q, quotedAttr, attr) => {
+    /**
+     * Get attribute string with their values (if quoted)
+     * (?:
+     *     (["'])
+     *     ([^\1\n]+?)
+     *     \1
+     *  |
+     *     (?<!['"\w])
+     *     (\w+)
+     * )
+     * \s*:
+     * (?:
+     *     \s*
+     *     (["'])
+     *     ([^\4\n]*?)
+     *     \4
+     * )?
+     */
+    return str.replace(
+        /(?:(["'])([^\1\n]+?)\1|(\w+))\s*:(?:\s*(["'])([^\4\n]*?)\4)?/g,
+        (_str, _q, quotedAttr, attr, _q2, value) =>
+    {
         const attribute = quotedAttr || attr;
-        return `"${attribute}":`;
+        const val = value ? `"${value}"` : '';
+        return `"${attribute}":${val}`;
     }).replace(/'([^'\n]*?)'/g, (str, quotedStr) => {
         return `"${quotedStr}"`;
     });
@@ -352,8 +374,9 @@ export default defineComponent({
                                 } else {
                                     params[attribute] = capture;
                                 }
-                            } catch(e) {
+                            } catch (err) {
                                 this.reason = 'attribute value is not correct';
+                                console.error('Error while parsing attribute value "%s"', capture, err.message);
                                 return [false];
                             }
                             mode = 'inside';

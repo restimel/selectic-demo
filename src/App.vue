@@ -6,7 +6,7 @@
             or dynamic selction (for very large list).
         </p>
         <div id="nav">
-            <router-link to="/">Examples</router-link> |
+            <router-link to="/">Custom Examples</router-link> |
             <router-link to="/draft">Sandbox</router-link> |
             <router-link to="/about">About</router-link>
         </div>

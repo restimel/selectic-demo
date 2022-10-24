@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <h1>Selectic examples</h1>
+        <h1>Selectic custom examples</h1>
         <SelecticParameter />
     </div>
 </template>

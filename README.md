@@ -1,6 +1,6 @@
 # Selectic demonstration
 
-> VueJS 2.X + Selectic
+> VueJS 3.X + Selectic
 
 
 ## Introduction
@@ -12,5 +12,4 @@ This project is to show how to use it and to understand better how it works with
 
 ## Live demonstration
 
-https://restimel.github.io/selectic-demo/examples/index.html
-
+https://restimel.github.io/selectic-demo/dist/index.html

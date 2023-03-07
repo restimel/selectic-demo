@@ -314,6 +314,10 @@
         </legend>
         <pre class="result-code">{{htmlSelectic}}</pre>
     </fieldset>
+    <div class="empty-space" :style="`--height-value: ${pageSpace}px`">
+        <input type="range" min="20" max="5000" v-model="pageSpace">
+        Space at the end of this page <em>(to play with scroll)</em>
+    </div>
 </div>
 </template>
 <script>
@@ -410,6 +414,7 @@ export default defineComponent({
             innerElementOptionsVal: 0,
             optionBehaviorOperation: '',
             optionBehaviorOrder: '',
+            pageSpace: 20,
         };
     },
     computed: {
@@ -655,5 +660,8 @@ export default defineComponent({
 }
 .result-code {
     text-align: left;
+}
+.empty-space {
+    height: var(--height-value, 20px);
 }
 </style>

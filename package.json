@@ -33,7 +33,7 @@
         "deploy": "npm run build && npm run gh-pages"
     },
     "dependencies": {
-        "selectic": "3.0.18",
+        "selectic": "^3.0.19",
         "vue": "^3.0.0",
         "vue-router": "^4.0.0-0"
     },

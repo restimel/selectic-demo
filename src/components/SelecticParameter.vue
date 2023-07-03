@@ -266,47 +266,66 @@
             Redraw Selectic component
         </button>
     </fieldset>
-    <fieldset>
+    <fieldset class="example-section" ref="exampleSection">
         <legend>
             Example
         </legend>
-        <Selectic v-if="draw"
-            class="example"
-            :options="options"
-            :value="optionValue"
-            :groups="groups"
-            :placeholder="optionPlaceholder"
-            :title="optionTitle"
-            :multiple="multiple"
-            :disabled="disabled"
-            :params="optionParams"
+        <aside class="example-control" :class="{open: expandExampleControl}">
+            <button @click="expandExampleControl = !expandExampleControl"
+                title="Expand/reduce extended control menu"
+            >
+                <span v-if="expandExampleControl">
+                    -
+                </span>
+                <span v-else>
+                    +
+                </span>
+            </button>
+            <section v-if="expandExampleControl">
+                <label><input type="checkbox" v-model="showExample">Show</label>
+                <label><input type="checkbox" v-model="removeFromDOM">remove from DOM</label>
+            </section>
+        </aside>
 
-            @change="(val) => optionValue = val"
-        >
-            <template v-if="innerElementOptionsVal > 0">
-                <option v-for="opt of innerElementOptionList"
-                    :value="opt.id"
-                    :key="opt.id"
-                >
-                    {{opt.text}}
-                </option>
-            </template>
-            <template v-if="innerElementOptionsVal < 0">
-                <optgroup v-for="gp of innerElementGroupOptionList"
-                    :value="gp.id"
-                    :label="gp.text"
-                    :key="gp.id"
-                >
-                    <option v-for="opt of gp.options"
+        <div v-show="showExample" ref="exampleContainer">
+            <Selectic v-if="draw"
+                class="example"
+                :options="options"
+                :value="optionValue"
+                :groups="groups"
+                :placeholder="optionPlaceholder"
+                :title="optionTitle"
+                :multiple="multiple"
+                :disabled="disabled"
+                :params="optionParams"
+
+                @change="(val) => optionValue = val"
+            >
+                <template v-if="innerElementOptionsVal > 0">
+                    <option v-for="opt of innerElementOptionList"
                         :value="opt.id"
                         :key="opt.id"
                     >
                         {{opt.text}}
                     </option>
-                </optgroup>
-            </template>
-        </Selectic>
-        <label>Selected value: <output>{{JSON.stringify(optionValue)}}</output></label>
+                </template>
+                <template v-if="innerElementOptionsVal < 0">
+                    <optgroup v-for="gp of innerElementGroupOptionList"
+                        :value="gp.id"
+                        :label="gp.text"
+                        :key="gp.id"
+                    >
+                        <option v-for="opt of gp.options"
+                            :value="opt.id"
+                            :key="opt.id"
+                        >
+                            {{opt.text}}
+                        </option>
+                    </optgroup>
+                </template>
+            </Selectic>
+            <label>Selected value: <output>{{JSON.stringify(optionValue)}}</output></label>
+        </div>
     </fieldset>
     <fieldset>
         <legend>
@@ -415,6 +434,11 @@ export default defineComponent({
             optionBehaviorOperation: '',
             optionBehaviorOrder: '',
             pageSpace: 20,
+
+            /* More example controls */
+            expandExampleControl: false,
+            showExample: true,
+            removeFromDOM: false,
         };
     },
     computed: {
@@ -583,6 +607,16 @@ export default defineComponent({
                 this.optionParams.optionBehavior = `${optionBehaviorOperation}-${optionBehaviorOrder}`;
             }
         },
+        manageExampleDOM() {
+            const el = this.$refs.exampleContainer;
+            const parentEl = this.$refs.exampleSection;
+
+            if (this.removeFromDOM) {
+                parentEl.removeChild(el);
+            } else {
+                parentEl.append(el);
+            }
+        }
     },
     watch: {
         'optionParams.selectionOverflow'() {
@@ -632,6 +666,12 @@ export default defineComponent({
             }
             this.buildOptionBehavior();
         },
+        removeFromDOM() {
+            this.manageExampleDOM();
+        },
+    },
+    mounted() {
+        this.manageExampleDOM();
     },
     components: {
         Selectic,
@@ -645,6 +685,21 @@ export default defineComponent({
 .example {
     max-width: 500px;
 }
+.example-section {
+    position: relative;
+}
+.example-control {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.example-control.open {
+    padding: 10px;;
+    border: 1px solid black;
+    background: white;
+    box-shadow: -1px -1px 5px black;
+}
+
 .info {
     font-size: 0.8em;
     font-style: italic;
